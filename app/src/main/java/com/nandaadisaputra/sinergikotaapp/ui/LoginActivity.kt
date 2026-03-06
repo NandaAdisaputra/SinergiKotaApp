@@ -60,11 +60,7 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(this, "Login Berhasil: ${user.fullName}", Toast.LENGTH_SHORT).show()
 
             // Menyiapkan perpindahan halaman (Intent) ke DetailActivity
-            val intent = Intent(this, DetailActivity::class.java)
-
-            // Mengirim data nama lengkap user ke activity tujuan agar bisa ditampilkan di sana
-            intent.putExtra("user_name", user.fullName)
-
+            val intent = Intent(this, HomeActivity::class.java)
             // Menjalankan perpindahan halaman
             startActivity(intent)
 

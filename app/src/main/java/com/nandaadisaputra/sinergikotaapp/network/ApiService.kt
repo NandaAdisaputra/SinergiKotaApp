@@ -19,4 +19,5 @@ object ApiService {
      * Variabel ini bersifat 'public' agar bisa diakses oleh AuthRepository.
      */
     const val END_POINT_LOGIN = "$BASE_URL/auth/login"
+    const val ENDPOINT_REPORTS = "$BASE_URL/reports"
 }

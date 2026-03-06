@@ -3,4 +3,8 @@
     <string name="masukkan_username">Masukkan Username</string>
     <string name="masukkan_kata_sandi">Masukkan Kata Sandi</string>
     <string name="login">LOGIN</string>
+    <string name="daftar_laporan_sinergi_kota">Daftar Laporan Sinergi Kota</string>
+    <string name="deskripsi_laporan_akan_muncul_di_sini">Deskripsi laporan akan muncul di sini...</string>
+    <string name="_2026_03_04">2026-03-04</string>
+    <string name="judul_laporan">Judul Laporan</string>
 </resources>
