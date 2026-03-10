@@ -92,11 +92,11 @@ class UploadActivity : AppCompatActivity() {
 
     /**
      * Fungsi Helper: Mengonversi URI galeri menjadi File di cache internal.
-     * Alasan: HttpURLConnection memerlukan akses File fisik/Path untuk dikirim
+     * Alasan: HttpURLConnection memerluile fisik/Path untuk dikirim
      * sebagai multipart stream, sementara URI galeri seringkali diproteksi/dienkripsi.
      */
     private fun get_file_from_uri(uri: Uri): File {
-        // Membuka aliran data dari URI
+        // Membuka akses Fka aliran data dari URI
         val input_stream: InputStream? = contentResolver.openInputStream(uri)
         // Membuat file sementara di folder cache aplikasi
         val temp_file = File(cacheDir, "temp_upload_image.jpg")

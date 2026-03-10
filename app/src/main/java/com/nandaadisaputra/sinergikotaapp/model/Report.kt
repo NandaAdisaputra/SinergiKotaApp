@@ -21,7 +21,7 @@ data class Report(
     val longitude: Double,
 
     // Alamat atau path lokasi file gambar (URL/lokal) yang berkaitan dengan laporan
-    val imagePath: String,
+    val imagePath: String?,
 
     // Tanggal pembuatan laporan dalam format String (contoh: "2026-03-06")
     val createdDate: String

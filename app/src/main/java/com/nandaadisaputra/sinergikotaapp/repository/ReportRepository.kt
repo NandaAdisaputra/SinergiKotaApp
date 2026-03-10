@@ -32,7 +32,7 @@ class ReportRepository {
 
     // --- FUNGSI AMBIL DATA (GET) ---
 
-    fun get_all_reports(callback: ReportCallback) {
+    fun  get_all_reports(callback: ReportCallback) {
         // Menjalankan proses di Thread terpisah agar aplikasi tidak "Not Responding"
         Thread {
             try {
@@ -67,7 +67,6 @@ class ReportRepository {
             }
         }.start()
     }
-
     // --- FUNGSI UNGGAH DATA (POST MULTIPART) ---
 
     fun upload_report(
