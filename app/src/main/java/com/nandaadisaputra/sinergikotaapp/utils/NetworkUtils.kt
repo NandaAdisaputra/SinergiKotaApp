@@ -6,56 +6,51 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
-//Objek ini berfungsi sebagai penyedia fungsi
-// bantuan (utility) untuk menangani koneksi jaringan
-// secara manual tanpa menggunakan library pihak ketiga.
+/**
+ * Utility untuk menangani koneksi HTTP secara manual.
+ * Dioptimalkan untuk menangani ErrorStream (Status 401/404/500).
+ */
 object NetworkUtils {
-    fun get_connection(url_target: String, method: String): HttpURLConnection {
-        // Mengubah string alamat URL menjadi objek URL
-        val url = URL(url_target)
 
-        // Membuka koneksi ke server melalui protokol HTTP
+    fun get_connection(url_target: String, method: String): HttpURLConnection {
+        val url = URL(url_target)
         val conn = url.openConnection() as HttpURLConnection
 
-        // Menentukan metode HTTP (contoh: GET, POST, PUT, atau DELETE)
         conn.requestMethod = method
-
-        // Mengatur header agar server tahu format data yang dikirim adalah form-urlencoded
         conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded")
-
-        // Mengatur header agar aplikasi menerima respon dalam format JSON
         conn.setRequestProperty("Accept", "application/json")
 
-        // Batas waktu maksimal untuk mencoba terhubung ke server (10 detik)
+        // Timeout 10 detik untuk koneksi dan pembacaan data
         conn.connectTimeout = 10000
-
-        // Batas waktu maksimal untuk menunggu data dari server (10 detik)
         conn.readTimeout = 10000
 
-        // Jika metodenya POST, izinkan aplikasi untuk mengirimkan data (output) ke server
-        if (method == "POST") conn.doOutput = true
+        // Konfigurasi stream untuk metode POST
+        if (method == "POST") {
+            conn.doOutput = true
+            conn.doInput = true // Memastikan stream input siap menerima respon
+        }
 
         return conn
     }
-    fun read_stream(stream: InputStream): String {
-        // Menyiapkan pembaca (reader) untuk mengambil data dari aliran input
+
+    /**
+     * Membaca aliran data (Stream) menjadi String.
+     * Ditambahkan pengecekan null untuk menangani errorStream yang kosong.
+     */
+    fun read_stream(stream: InputStream?): String {
+        if (stream == null) return "" // Mencegah crash/freeze jika stream kosong
         val reader = BufferedReader(InputStreamReader(stream))
-
-        // Tempat penampungan sementara untuk menyusun teks yang dibaca
         val sb = StringBuilder()
-        var line: String?
-
         try {
-            // Membaca data baris demi baris sampai habis
+            var line: String?
             while (reader.readLine().also { line = it } != null) {
                 sb.append(line)
             }
+        } catch (e: Exception) {
+            // Log error agar tidak silent freeze
         } finally {
-            // Memastikan aliran data ditutup setelah selesai untuk menghemat memori
-            stream.close()
+            stream.close() // Wajib ditutup
         }
-
-        // Mengembalikan hasil akhir dalam bentuk String utuh
         return sb.toString()
     }
 }

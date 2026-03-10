@@ -9,21 +9,22 @@ object ApiService {
 
     /**
      * Alamat dasar (Base URL) server API.
-     * Alamat "10.0.2.2" adalah IP khusus yang digunakan Emulator Android
+     * Alamat "10.0.22" adalah IP khusus yang digunakan Emulator Android
      * untuk mengakses 'localhost' pada komputer host (PC).
-     * Jika menggunakan perangkat fisik, ganti dengan alamat IP lokal PC Anda.
      */
     private const val BASE_URL = "http://10.0.2.2:5000/api"
 
     /**
-     * Endpoint khusus untuk proses autentikasi login.
-     * URL Lengkap: http://10.0.2.2:5000/api/auth/login
+     * Endpoint untuk proses autentikasi login.
+     * Metode: POST (x-www-form-urlencoded)
      */
     const val END_POINT_LOGIN = "$BASE_URL/auth/login"
 
     /**
-     * Endpoint khusus untuk mengambil atau mengirim data laporan.
-     * URL Lengkap: http://10.0.2.2:5000/api/reports
+     * Endpoint laporan (Reports).
+     * Digunakan untuk dua fungsi:
+     * 1. GET: Mengambil daftar laporan (List)
+     * 2. POST: Mengunggah laporan baru (Multipart Form Data)
      */
     const val ENDPOINT_REPORTS = "$BASE_URL/reports"
 }

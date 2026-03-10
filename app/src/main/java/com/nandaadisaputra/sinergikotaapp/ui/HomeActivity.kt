@@ -1,5 +1,6 @@
 package com.nandaadisaputra.sinergikotaapp.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.nandaadisaputra.sinergikotaapp.R
 import com.nandaadisaputra.sinergikotaapp.adapter.ReportAdapter
 import com.nandaadisaputra.sinergikotaapp.viewmodel.ReportViewModel
@@ -24,38 +26,44 @@ class HomeActivity : AppCompatActivity() {
         // Menghubungkan Activity dengan layout XML activity_home
         setContentView(R.layout.activity_home)
 
-        // Inisialisasi komponen UI berdasarkan ID yang ada di XML
+        // 1. Inisialisasi komponen UI berdasarkan ID lowercase_underscore
         rv_reports = findViewById(R.id.rv_reports)
         pb_loading = findViewById(R.id.pb_home_loading)
+        val fab_add_report = findViewById<FloatingActionButton>(R.id.fab_add_report)
 
-        // Mengatur agar RecyclerView tampil dalam bentuk daftar vertikal (list)
+        // 2. Mengatur LayoutManager (Daftar Vertikal)
         rv_reports.layoutManager = LinearLayoutManager(this)
 
-        // Inisialisasi ViewModel menggunakan ViewModelProvider agar data tetap terjaga meski layar diputar (orientasi berubah)
+        // 3. Inisialisasi ViewModel
         view_model = ViewModelProvider(this)[ReportViewModel::class.java]
+
+        // 4. Aksi klik pada FAB untuk pindah ke halaman Upload
+        fab_add_report.setOnClickListener {
+            val intent_ke_upload = Intent(this, UploadActivity::class.java)
+            startActivity(intent_ke_upload)
+        }
 
         /**
          * Observasi perubahan data:
-         * Setiap kali daftar laporan di ViewModel berubah, blok kode ini akan dijalankan
-         * untuk memperbarui tampilan RecyclerView.
+         * Memperbarui RecyclerView setiap kali ada data laporan baru dari server.
          */
         view_model.reports.observe(this) { list ->
-            // Mengatur adapter RecyclerView dengan data laporan terbaru
-            rv_reports.adapter = ReportAdapter(list)
+            if (list != null) {
+                rv_reports.adapter = ReportAdapter(list)
+            }
         }
 
         /**
          * Observasi status loading:
-         * Menampilkan ProgressBar jika sedang mengambil data, dan menyembunyikannya jika sudah selesai.
+         * Menampilkan/menyembunyikan ProgressBar saat proses pengambilan data.
          */
         view_model.is_loading.observe(this) { loading ->
-            // Mengubah visibilitas ProgressBar berdasarkan nilai boolean 'loading'
             pb_loading.visibility = if (loading) View.VISIBLE else View.GONE
         }
 
         /**
          * Observasi pesan kesalahan:
-         * Menampilkan pesan error dalam bentuk Toast (pop-up singkat) jika terjadi masalah.
+         * Memberikan notifikasi jika koneksi atau parsing data gagal.
          */
         view_model.error_message.observe(this) { msg ->
             if (msg != null) {
@@ -63,7 +71,17 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        // Memanggil fungsi untuk mulai mengambil data laporan dari server saat aplikasi pertama kali dibuka
+        // Memanggil data untuk pertama kali
+        view_model.fetch_reports()
+    }
+
+    /**
+     * Fungsi onResume:
+     * Sangat penting untuk LKS! Fungsi ini akan berjalan otomatis saat user kembali
+     * dari UploadActivity ke HomeActivity, sehingga daftar laporan langsung ter-update.
+     */
+    override fun onResume() {
+        super.onResume()
         view_model.fetch_reports()
     }
 }
