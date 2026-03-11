@@ -54,3 +54,9 @@ object NetworkUtils {
         return sb.toString()
     }
 }
+
+//alur
+//1. getConnection -> Membuka koneksi ke server
+//2. Request dikirim ( GET / POST )
+//3. Server mengirim response
+//4. readStream -> membaca data dari server
