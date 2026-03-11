@@ -28,7 +28,7 @@ object ApiService {
      */
     const val ENDPOINT_REPORTS = "$BASE_URL/reports"
     /**
-     * PERBAIKAN: Gunakan /images/ sesuai folder di wwwroot C#
-     */
+     * Gunakan /images/ sesuai folder di wwwroot C#
+//     */
     const val BASE_URL_IMAGE = "http://10.0.2.2:5000/images/"
 }

@@ -44,7 +44,7 @@ class ReportAdapter(private val list_report: List<Report>) :
 
         /**
          * Menggabungkan Base URL Image dengan image_path dari database.
-         * URL: http://10.0.2.2:5000/uploads/ (lewat ApiService)
+         * URL: http://10.0.2.2:5000/images/ (lewat ApiService)
          */
         val full_image_url = ApiService.BASE_URL_IMAGE + report.imagePath
 
